@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <title>Goût du Boeuf - Kobe d'Oc Chain - Backend</title>
+
+        <link href="./css/style.css" rel='stylesheet' type='text/css'>
+
+
+    </head>
+
+
+    <body>
+        <div id="contact-form">
+            <div id="logo">
+                <img src="./img/le-gout-du-boeuf-logo.png" alt="GdB" height="89" width="251">
+            </div>
+            <div style="width:100%;">
+                <div>
+                    <h1>Bienvenue sur la Kobe d'Oc Chain</h1> 
+                    <br><br>
+                    <h4>Enregistrez la provenance de votre Kobe d'Oc sur blockchain</h4> 
+                </div>	
+
+            </div>
+            <div style="margin:10% 5%;">
+
+                <p id="noMetamask">Installez MetaMask pour utiliser cette application. <a href="https://metamask.io/" target="_blank">https://metamask.io/</a></p>  
+
+              
+                <form method="post" enctype="multipart/form-data">
+
+
+                    <div id="fileSelectDiv">		          
+                        <label for="fileInput">		      	
+                            <input type="file" id="fileInput" onchange="onFileSelected()" required="required">
+                        </label> 
+                    </div>                    
+                    <div id="loadedImg" style ="display:none;">
+                         <img id="proofImg" style ="max-width:100%;max-height:100%;" src="#" />
+                    </div>
+                    <div>		           
+                        <button type="button" id="qrCodeButton" onclick="computeQRCode()" disabled>Générer le QR Code</button>
+                        <button type="button" id="sendButton" onclick="uploadFile()" disabled>Enregistrer</button>                        
+                    </div>
+                    
+                     <div id="printSticker" style ="display:none;">
+                        <div id="playitOpenLogo" style="width:100%;height:20px;">
+                            <p style="font-family: Arial, san-serif;color: #bd000e;margin-left: auto;margin-right: auto; text-align: center;">Play It Open</p>
+                        </div>
+
+                         <div id="qrcode"  style="cursor: pointer;" onclick="onClickQrCode()"></div>                        
+                    </div>
+                    <input type="button" style ="display:none;" id="printButton" value="Imprimer" onclick="printQRCode()" />
+                </form>
+                
+                 <p id="status"></p>
+            </div>
+            <br>
+
+            <div id="history">
+            </div>	
+
+
+
+
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Copyright © Play It Open Team</p>
+            </div>
+        </footer>
+
+        <script src="./js/web3.min.js"></script>
+        <script src="./js/abi.js"></script>
+        <script src="./js/qrcode.min.js"></script>
+        <script src="js/core-min.js"></script>  
+        <script src="js/sha256-min.js"></script>  
+        <script src="https://npmcdn.com/ipfs-api/dist/index.min.js"></script>
+        <script src="https://apis.google.com/js/client.js"></script>
+        <script src="./js/backend.js"></script>
+
+    </body>
+
+
+
+</html>

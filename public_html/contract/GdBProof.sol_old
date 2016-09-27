@@ -1,0 +1,22 @@
+contract GdBContract {
+        
+    event ProofEvent (bytes indexed _qrhash, address indexed _from);
+		
+    address pio_owner;
+    
+    
+    function GdBContract(){
+            pio_owner = msg.sender; 
+    }
+
+    function publishProof(bytes qrHash) returns (bool success) {
+        ProofEvent(qrHash,msg.sender);
+        return true;
+    }   
+	
+    function kill() {
+        if (msg.sender != pio_owner) return;
+        selfdestruct(pio_owner);   
+    }
+
+}
