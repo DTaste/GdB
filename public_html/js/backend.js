@@ -237,7 +237,7 @@ function createQRCode() {
 
 
 
-    gapi.client.setApiKey('AIzaSyCqx_hQ893609GzJe0jnroT_bmX5gcI7hA'); //get your ownn Browser API KEY
+    gapi.client.setApiKey('AIzaSyC8JOvDiXIFIxe0gI73cX0WOG8SRC9e-7U'); //get your ownn Browser API KEY
     gapi.client.load('urlshortener', 'v1').then(function () {
         var request = gapi.client.urlshortener.url.insert({
             'resource': {
