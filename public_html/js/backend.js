@@ -51,9 +51,9 @@ var proofEvents = gdbContract.ProofEvent({_from: window.account}, {fromBlock: 0,
 
 
 function onFileSelected() {
-    reset ();
+    reset();
     document.getElementById("qrCodeButton").disabled = false;
-    
+
 
     file = document.getElementById("fileInput").files[0];
     var reader = new FileReader(); // File API object
@@ -69,7 +69,7 @@ function uploadFile() {
 
     setStatus("Veuillez patienter pendant l'enregistrement ...");
     gdbContract.proofExists.call(web3.toAscii(window.hash), function (err, res) {
-        
+
         if (res == true) {
             clearStatus();
             setStatus("Cette preuve a déjà été enregistrée.");
@@ -112,16 +112,28 @@ function transactionStatus(txid) {
 
     var startTime = Date.now();
     var counter = 0;
+    var confirmationStartTime = -1;
     var i = setInterval(function () {
-        web3.eth.getTransactionReceipt(txid, function (error, result) {
+        web3.eth.getTransaction(txid, function (error, result) {
 
-            if (result != null) {
-                clearInterval(i);
+            if (result !== null && result.blockNumber === null) {
+                //console.log(result);
+
                 clearStatus();
+
+                if (confirmationStartTime === -1)
+                    confirmationStartTime = Date.now();
+
+                elapsedTime = Date.now() - confirmationStartTime;
                 setStatus("Transaction <a href=\"http://testnet.etherscan.io/tx/" + txid + "\"  target=\"_blank\">" + txid + "</a> validée");
+                setStatus("Transaction en cours de confirmation depuis " + Math.trunc(elapsedTime / 1000) + " secondes");
 
+
+            } else if (result !== null) {
+                clearStatus();
+                clearInterval(i);
+                setStatus("Transaction <a href=\"http://testnet.etherscan.io/tx/" + txid + "\"  target=\"_blank\">" + txid + "</a> confirmed");
                 watchHistoric();
-
             } else {
                 elapsedTime = Date.now() - startTime;
                 clearStatus();
@@ -251,9 +263,9 @@ function createQRCode() {
             {
 
                 window.shortUrl = response.id;
-                
-                
-                
+
+
+
                 var qrcode = new QRCode(document.getElementById("qrcode"), {
                     text: response.id,
                     width: 128,
@@ -323,18 +335,18 @@ function computeQRCode() {
     document.getElementById("sendButton").disabled = false;
 }
 
-function reset () {
+function reset() {
     clearStatus();
     document.getElementById("qrCodeButton").disabled = true;
-    document.getElementById("sendButton").disabled = true;    
+    document.getElementById("sendButton").disabled = true;
     document.getElementById("printButton").style.display = 'none';
     document.getElementById("loadedImg").style.display = 'none';
     document.getElementById("printSticker").style.display = 'none';
     qrcode = document.getElementById("qrcode");
     while (qrcode.firstChild) {
-        qrcode.removeChild(qrcode.firstChild);        
+        qrcode.removeChild(qrcode.firstChild);
     }
-    
+
 }
 
 watchHistoric();
