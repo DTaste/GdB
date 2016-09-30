@@ -56,12 +56,17 @@ function onFileSelected() {
 
 
     file = document.getElementById("fileInput").files[0];
-    var reader = new FileReader(); // File API object
-    reader.onload = function (event) {
-        document.getElementById("loadedImg").style.display = 'block';
-        document.getElementById('proofImg').src = event.target.result;
+    
+    if(file.size > 1000000) {
+        window.alert("Version Alpha : la taille du fichier doit être < 1 Mo");
+    } else {
+        var reader = new FileReader(); // File API object
+        reader.onload = function (event) {
+            document.getElementById("loadedImg").style.display = 'block';
+            document.getElementById('proofImg').src = event.target.result;
+        }
+        reader.readAsDataURL(file);
     }
-    reader.readAsDataURL(file);
 }
 
 

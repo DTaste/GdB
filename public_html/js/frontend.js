@@ -76,39 +76,23 @@ function getProof() {
         info.innerHTML = record;
     });
     
-    var proofEvents = gdbContract.ProofEvent({_hash: givenhash}, {fromBlock: 0, toBlock: 'latest'});
   
-    var i = setInterval(function () {          
-          if(window.txFound)
-              clearInterval(i);
-          else          
-            watchTx(proofEvents, info);
-    }, 1000);
     
 }
 
-function watchTx (proofEvents, info) {
-    
-    proofEvents.get(function (err, resultWatch) {
-        if(window.txFound) return;
+window.addEventListener('load', function () {
+    getProof();
+    info = document.getElementById("blockchainData");
+    var proofEvents = gdbContract.ProofEvent({}, {fromBlock: 0, toBlock: 'latest'});
+    proofEvents.watch(function (err, resultWatch) {
+        
         if (err) {
             console.log("Error = " + err);
             return;
         }  
-        if(resultWatch.length == 1) {
-            window.txFound = true;
-            info.innerHTML += "<p> <a href=\"http://testnet.etherscan.io/tx/" + resultWatch[0].transactionHash + "\"  target=\"_blank\"> Voir la preuve blockchain </a></p>"
+        
+        if(resultWatch.args._hash === givenhash) {        
+            info.innerHTML += "<p> <a href=\"http://testnet.etherscan.io/tx/" + resultWatch.transactionHash + "\"  target=\"_blank\"> Voir la preuve blockchain </a></p>"
         }
     });
-    
-//    proofEvents.watch(function (err, resultWatch) {
-//        if (err) {
-//            console.log("Error = " + err);
-//            return;
-//        }  
-//        window.txFound = true;
-//        info.innerHTML += "<p> <a href=\"http://testnet.etherscan.io/tx/" + resultWatch.transactionHash + "\"  target=\"_blank\"> Voir la preuve blockchain </a></p>"
-//    });
-}
-
-window.onload = getProof();
+});
